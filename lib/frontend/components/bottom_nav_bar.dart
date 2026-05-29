@@ -22,7 +22,7 @@ class CustomBottomNavBar extends StatelessWidget {
         backgroundColor: Colors.transparent,
         barrierColor: Colors.black.withOpacity(0.5), // Semi-transparent overlay backdrop
         builder: (context) => const FractionallySizedBox(
-          heightFactor: 0.5, // Adjusts sheet display height
+          heightFactor: 0.2, // Adjusts sheet display height
           child: ServicesDrawerPage(),
         ),
       );

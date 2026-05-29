@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class ApiClient {
-  // Replace with your real production domain or local IP (e.g., http://10.0.2.2:8000 for local android simulation)
-  static const String baseUrl = "http://192.168.101.1:8000/api";
+  // Replace with your real production domain or local IP (e.g., http://10.0.2.2:8000 for local android simulation)"http://192.168.101.1:8000/api"
+  static const String baseUrl = "http://10.0.2.2:8000/api";
   
   // Persistent local cache memory property for holding the Sanctum token
   static String? _token;

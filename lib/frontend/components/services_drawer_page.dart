@@ -14,30 +14,37 @@ class ServicesDrawerPage extends StatelessWidget {
       padding: const EdgeInsets.only(top: 12, left: 16, right: 16, bottom: 12),
       child: Column(
         children: [
+          // Dismiss Arrow Button
           IconButton(
             icon: const Icon(Icons.keyboard_arrow_down, color: AppColors.orangeMain, size: 32),
             onPressed: () => Navigator.pop(context),
           ),
           const SizedBox(height: 8),
+          
           Expanded(
-            child: GridView.count(
-              crossAxisCount: 4,
-              mainAxisSpacing: 24,
-              crossAxisSpacing: 8,
-              children: [
-                _buildDrawerIcon(Icons.notifications_none, "Online\nPuja"),
-                _buildDrawerIcon(Icons.star_outline, "Astrology\nServices"),
-                _buildDrawerIcon(Icons.calendar_today, "Auspicious\nDays"),
-                _buildDrawerIcon(Icons.camera_alt_outlined, "Photography\nProvider"),
-                _buildDrawerIcon(Icons.location_on, "Venue"),
-                _buildDrawerIcon(Icons.auto_stories, "Puja Material\nSupplier"),
-                _buildDrawerIcon(Icons.diamond_outlined, "Jewellery\nShop"),
-                _buildDrawerIcon(Icons.music_note, "DJ service"),
-                _buildDrawerIcon(Icons.restaurant, "Catering\nProvider"),
-                _buildDrawerIcon(Icons.yard_outlined, "Garland\nSupplier"),
-                _buildDrawerIcon(Icons.celebration, "Decoration\nProvider"),
-                _buildDrawerIcon(Icons.gavel, "Legal Marriage\nCelebrant"),
-              ],
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 1. Static Core Services Menu (Kept as requested)
+                  GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 4,
+                    mainAxisSpacing: 24,
+                    crossAxisSpacing: 8,
+                    childAspectRatio: 0.8,
+                    children: [
+                      _buildDrawerIcon(Icons.notifications_none, "Online\nPuja"),
+                      _buildDrawerIcon(Icons.star_outline, "Astrology\nServices"),
+                      _buildDrawerIcon(Icons.calendar_today, "Auspicious\nDays"),
+                    ],
+                  ),
+                  
+                  // Divider to cleanly separate the Core items from Dynamic Related items
+                ],
+              ),
             ),
           )
         ],
@@ -45,6 +52,7 @@ class ServicesDrawerPage extends StatelessWidget {
     );
   }
 
+  // Builder method kept exclusively for the local static Core Services items
   Widget _buildDrawerIcon(IconData icon, String label) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -56,6 +64,8 @@ class ServicesDrawerPage extends StatelessWidget {
             label,
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 11, color: Colors.black87, height: 1.1),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
       ],

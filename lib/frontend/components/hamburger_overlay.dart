@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../constants.dart';
+import 'category_grid_view.dart'; // Import the reusable backend grid component
 
 class HamburgerOverlay extends StatelessWidget {
   const HamburgerOverlay({Key? key}) : super(key: key);
@@ -53,7 +54,11 @@ class HamburgerOverlay extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text("Quick Links", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
+                          // 1. Hardcoded Quick Links (Kept as requested)
+                          const Text(
+                            "Quick Links", 
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+                          ),
                           const SizedBox(height: 16),
                           GridView.count(
                             shrinkWrap: true,
@@ -72,29 +77,37 @@ class HamburgerOverlay extends StatelessWidget {
                               _buildQuickLinkItem(Icons.person_outline, "Find Gurus"),
                             ],
                           ),
+                          
                           const Padding(
                             padding: EdgeInsets.symmetric(vertical: 16.0),
                             child: Divider(color: AppColors.borderGray, thickness: 1),
                           ),
-                          const Text("Related Services", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
+                          
+                          // 2. Dynamic Related Services (Now pulls dynamically from the database API)
+                          const Text(
+                            "Related Services", 
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+                          ),
                           const SizedBox(height: 16),
-                          GridView.count(
+                          
+                          CategoryGridView(
+                            crossAxisCount: 3,
+                            childAspectRatio: 0.78,
+                            isCompact: true,
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 16,
-                            children: [
-                              _buildQuickLinkItem(Icons.location_on, "Venue"),
-                              _buildQuickLinkItem(Icons.auto_stories, "Puja Material\nSupplier"),
-                              _buildQuickLinkItem(Icons.diamond_outlined, "Jewellery\nShop"),
-                              _buildQuickLinkItem(Icons.restaurant, "Catering\nProvider"),
-                              _buildQuickLinkItem(Icons.yard_outlined, "Garland\nSupplier"),
-                              _buildQuickLinkItem(Icons.celebration, "Decoration\nProvider"),
-                              _buildQuickLinkItem(Icons.camera_alt_outlined, "Photography\nProvider"),
-                              _buildQuickLinkItem(Icons.music_note, "DJ service"),
-                              _buildQuickLinkItem(Icons.gavel, "Legal Marriage\nCelebrant"),
-                            ],
+                            onCategoryTap: (category) {
+                              Navigator.pop(context);
+
+                              Navigator.pushNamed(
+                                context,
+                                '/services-by-category',
+                                arguments: {
+                                  'slug': category['slug'],
+                                  'title': category['title']
+                                },
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -109,6 +122,7 @@ class HamburgerOverlay extends StatelessWidget {
     );
   }
 
+  // Builder method kept exclusively for the local static Quick Links grid block
   Widget _buildQuickLinkItem(IconData icon, String title) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -122,10 +136,14 @@ class HamburgerOverlay extends StatelessWidget {
           child: Icon(icon, color: AppColors.orangeMain, size: 26),
         ),
         const SizedBox(height: 8),
-        Text(
-          title,
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 11, color: Colors.black87, height: 1.2),
+        Expanded(
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 11, color: Colors.black87, height: 1.2),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ],
     );
